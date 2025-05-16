@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langgraph-sdk"
-version = "0.1.69.2"
+version = "0.1.69.3"
 description = "SDK for interacting with LangGraph API"
 authors = []
 requires-python = ">=3.9"
@@ -13,7 +13,7 @@ license = "MIT"
 license-files = ['LICENSE']
 dependencies = [
     "httpx>=0.25.2",
-    "orjson~=3.8.0",
+    "orjson~=3.6.0",
 ]
 
 [project.urls]
