@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pypi:
+    name: Publish to CodeArtifact
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::134185523792:role/GitHubActions
+      - run: uv build
+      - name: Publish to CodeArtifact
+        run: |
+          export UV_PUBLISH_USERNAME=aws
+          export UV_PUBLISH_PASSWORD="$(aws codeartifact get-authorization-token --domain lumos --domain-owner 134185523792 --region us-west-2 --query authorizationToken --output text)"
+          uv publish --index codeartifact
+
